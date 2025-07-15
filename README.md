@@ -1,0 +1,2 @@
+# Shukurov
+İradam 🧡
