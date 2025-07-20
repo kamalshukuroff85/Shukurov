@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Affet Beni</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(-45deg, #ffecd2, #fcb69f, #ffdde1, #c2ffd8);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }@keyframes gradientBG {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+.hidden { display: none; }
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+#bear {
+  font-size: 60px;
+  position: relative;
+}
+.tear {
+  position: absolute;
+  left: 40%;
+  top: 30%;
+  width: 10px;
+  height: 10px;
+  background: #00f2ff;
+  border-radius: 50%;
+  animation: dropTear 1.5s infinite;
+  opacity: 0.7;
+}
+@keyframes dropTear {
+  0% { transform: translateY(0); opacity: 0.7; }
+  100% { transform: translateY(30px); opacity: 0; }
+}
+
+#nextBtn {
+  background-color: #ffa500;
+  color: white;
+}
+#yesBtn, #noBtn {
+  margin: 20px;
+  transition: all 0.3s ease;
+}
+#popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(255,165,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.box {
+  width: 200px;
+  height: 200px;
+  background: white;
+  border: 2px dashed orange;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+.heart {
+  position: absolute;
+  font-size: 24px;
+  animation: fly 2s forwards;
+}
+@keyframes fly {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-200px); }
+}
+
+  </style>
+</head>
+<body>  <!-- İlk Ekran -->  <div id="screen1">
+    <h2>Sen benim için çok özel ve değerli birisin 🧡</h2>
+    <p>Seni kaybetmek istemiyorum... <strong>Lütfennnn beni affet!</strong></p>
+    <div id="bear">
+      🥺🐻
+      <div class="tear"></div>
+    </div>
+    <button id="nextBtn">Geç &rarr;</button>
+  </div>  <!-- İkinci Ekran -->  <div id="screen2" class="hidden">
+    <h2>Bebii affedicek misin tatlım? 🧡</h2>
+    <button id="yesBtn">Evet</button>
+    <button id="noBtn">Hayır</button>
+    <p id="message"></p>
+  </div>  <!-- Kalpli Kutu Ekranı -->  <div id="popup" class="hidden">
+    <div class="box" id="heartBox">💛 Tıkla 💛</div>
+  </div>  <script>
+    const nextBtn = document.getElementById('nextBtn');
+    const screen1 = document.getElementById('screen1');
+    const screen2 = document.getElementById('screen2');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const message = document.getElementById('message');
+    const popup = document.getElementById('popup');
+    const heartBox = document.getElementById('heartBox');
+    const bear = document.getElementById('bear');
+
+    let noClickCount = 0;
+    let heartInterval;
+
+    nextBtn.addEventListener('click', () => {
+      screen1.classList.add('hidden');
+      setTimeout(() => {
+        screen2.classList.remove('hidden');
+      }, 3000);
+    });
+
+    noBtn.addEventListener('click', () => {
+      noClickCount++;
+      if (noClickCount === 1) message.textContent = "Üzülüyorum🥲";
+      else if (noClickCount === 3) message.textContent = "Özür dilerimmm";
+      else if (noClickCount === 5) message.textContent = "Bir daha düşün doktor hanım";
+      else if (noClickCount === 10) {
+        message.innerHTML = "🥺🐻 Ayı ağlamaya başladı...";
+        bear.querySelector('.tear').style.display = 'block';
+      }
+
+      yesBtn.style.transform = `scale(${1 + noClickCount * 0.1})`;
+    });
+
+    yesBtn.addEventListener('click', () => {
+      message.textContent = "İyiki varsın 🧡";
+      setTimeout(() => {
+        screen2.classList.add('hidden');
+        popup.classList.remove('hidden');
+      }, 5000);
+    });
+
+    heartBox.addEventListener('click', () => {
+      if (heartInterval) return; // Tekrar tıklanmasın diye
+      heartInterval = setInterval(() => {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.textContent = ['🧡','💐','🧡','🌸'][Math.floor(Math.random() * 4)];
+        heart.style.left = `${Math.random() * 100}%`;
+        heartBox.appendChild(heart);
+        setTimeout(() => heart.remove(), 2000);
+      }, 300);
+    });
+  </script></body>
+</html>
